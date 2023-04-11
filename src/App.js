@@ -9,13 +9,13 @@ import Box from "./component/Box";
 //5. 3 4의 결과를 가지고 승패를 따진다.
 //6. 승패의 결과에 따라 테두리 색이 바뀜(이기면 초록, 지면 빨강, 비기면 검정)
 const choice = {
-  rock: {
-    name: "Rock",
-    img: "https://cdn-icons-png.flaticon.com/512/5773/5773204.png",
-  },
   scissors: {
     name: "Scissors",
     img: "https://cdn-icons-png.flaticon.com/512/2928/2928823.png",
+  },
+  rock: {
+    name: "Rock",
+    img: "https://cdn-icons-png.flaticon.com/512/5773/5773204.png",
   },
   paper: {
     name: "Paper",
@@ -24,16 +24,39 @@ const choice = {
 };
 function App() {
   const [userSelect, setUserSelect] = useState(null);
+  const [computerSelect, setComputerSelect] = useState(null);
+  const [result, setResult] = useState("");
 
   const play = (userChoice) => {
-    setUserSelect(choice[userSelect]);
+    setUserSelect(choice[userChoice]);
+    let computerChoice = randomChoice();
+    setComputerSelect(computerChoice);
+    setResult(judgement(choice[userChoice], computerChoice));
+  };
+
+  const judgement = (user, computer) => {
+    if (user.name == computer.name) {
+      return "TIE";
+    } else if (user.name == "Rock")
+      return computer.name == "Scissors" ? "WIN" : "LOSE";
+    else if (user.name == "Scissors")
+      return computer.name == "Paper" ? "WIN" : "LOSE";
+    else if (user.name == "Paper")
+      return computer.name == "Rock" ? "WIN" : "LOSE";
+  };
+
+  const randomChoice = () => {
+    let itemArray = Object.keys(choice); //객체의 키값만 뽑아서 array로 만듦
+    let randomItem = Math.floor(Math.random() * itemArray.length);
+    let final = itemArray[randomItem];
+    return choice[final];
   };
 
   return (
     <div>
       <div className="main">
-        <Box title="You" item={userSelect} />
-        <Box title="Computer" />
+        <Box title="You" item={userSelect} result={result} />
+        <Box title="Computer" item={computerSelect} result={result} />
       </div>
       <div className="main">
         <button onClick={() => play("scissors")}>가위</button>

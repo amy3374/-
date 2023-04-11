@@ -12,3 +12,6 @@
 .item-img{
   width: 400px;
 }
+.WIN  {  border: 10px solid green;  color: green; }
+.LOSE {  border: 10px solid red;  color: red; }
+.TIE {  border: 10px solid black;  color: black; }
